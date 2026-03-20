@@ -4,22 +4,21 @@ import java.util.concurrent.*;
 
 public class OrderPipeline {
 
-    // Shared Queue
+    
     static BlockingQueue<String> queue = new LinkedBlockingQueue<>();
 
     public static void main(String[] args) {
 
-        // Start Producer Thread
+    
         Thread producer = new Thread(() -> produceOrders());
 
-        // Start Consumer Thread
+        
         Thread consumer = new Thread(() -> consumeOrders());
 
         producer.start();
         consumer.start();
     }
 
-    // PRODUCER: Generates data
     public static void produceOrders() {
         String[] products = {"Phone", "Laptop", "Tablet"};
         Random rand = new Random();
@@ -45,7 +44,7 @@ public class OrderPipeline {
         }
     }
 
-    // CONSUMER: Processes + stores in DB
+    
     public static void consumeOrders() {
         String url = "jdbc:mysql://localhost:3306/realtime_db";
         String user = "root";
@@ -69,10 +68,10 @@ public class OrderPipeline {
                 int amount = Integer.parseInt(values[2]);
                 String time = values[3];
 
-                // Simple validation
+                
                 if (amount <= 0) continue;
 
-                // Insert into DB
+                
                 ps.setInt(1, id);
                 ps.setString(2, product);
                 ps.setInt(3, amount);
@@ -80,7 +79,7 @@ public class OrderPipeline {
 
                 ps.executeUpdate();
 
-                // Analytics
+            
                 totalRevenue += amount;
 
                 System.out.println("Consumed: " + order);
